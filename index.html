@@ -3,11 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Chronometer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        p {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        span {
+            font-size: 48px;
+            margin: 0 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #ccc;
+        }
+        .HEURE{
+            display: flex;
+            flex-direction: row;
+        }
+        .B{
+            display: flex;
+            flex-direction: row;
+            
+        }
+    </style>
 </head>
 <body>
-    <h1> mon cv en ligne </h1>
-    <p> je ferai des exploit en informatique</p>
-    
+    <p>Chronometer by ELIE SALUMU</p>
+    <div class="HEURE">
+    <span id="H">00</span> 
+    <span id="M">00</span>
+    <span id="S">00</span>
+</div>
+<div class="B">
+    <button id="START" onclick="START()">START</button>
+    <button id="STOP" onclick="STOP()">STOP</button>
+    <button id="RESTART" onclick="RESTART()">RESTART</button>
+</div>
+
+    <script>
+        let HEURE = 0;
+        let MINUTE = 0;
+        let SECONDE = 0;
+        let intervalId;
+
+        function time() {
+            SECONDE++;
+            if (SECONDE >= 60) {
+                MINUTE++;
+                SECONDE = 0;
+            }
+            if (MINUTE >= 60) {
+                HEURE++;
+                MINUTE = 0;
+            }
+            document.getElementById('H').textContent = prod(HEURE);
+            document.getElementById('M').textContent = prod(MINUTE);
+            document.getElementById('S').textContent = prod(SECONDE);
+        }
+
+        function prod(n) {
+            return n < 10 ? "0" + n : n;
+        }
+
+        function START() {
+            if (!intervalId) { // Prevent multiple intervals
+                intervalId = setInterval(time, 1000);
+                document.getElementById('START').disabled = true; // Disable START button
+                document.getElementById('STOP').disabled = false; // Enable STOP button
+            }
+        }
+
+        function RESTART() {
+            
+            HEURE = 0;
+            MINUTE = 0;
+            SECONDE = 0;
+            document.getElementById('H').textContent = "00";
+            document.getElementById('M').textContent = "00";
+            document.getElementById('S').textContent = "00";
+            STOP(); // Stop the timer when restarting
+        }
+
+        function STOP() {
+            clearInterval(intervalId);
+            intervalId = null; // Reset interval ID
+            document.getElementById('START').disabled = false; // Enable START button
+            document.getElementById('STOP').disabled = true; // Disable STOP button
+        }
+    </script>
 </body>
 </html>
